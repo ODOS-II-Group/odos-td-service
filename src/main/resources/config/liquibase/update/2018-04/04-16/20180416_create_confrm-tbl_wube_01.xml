@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+    <changeSet id="2018-04-16-wube-01" author="Wube">
+      <sql>
+        create table odos_crrs_svc.conf_rm 
+        (
+          conf_rm_id serial not null,
+          rm_num int not null,
+          rm_name varchar(200) not null,
+          rm_capcity int not null,
+          rm_active_ind odos_crrs_svc.activ_ind,
+          bldg_id int not null references odos_crrs_svc.bldg (bldg_id),
+          primary key (conf_rm_id)
+        ); 
+        COMMENT ON TABLE odos_crrs_svc.conf_rm IS 'Represents the conference room'; 
+        COMMENT ON COLUMN odos_crrs_svc.conf_rm.conf_rm_id IS 'Primary key of the conference room'; 
+        COMMENT ON COLUMN odos_crrs_svc.conf_rm.rm_num IS 'Number of the conference room'; 
+        COMMENT ON COLUMN odos_crrs_svc.conf_rm.rm_name  IS 'Name of the conference room'; 
+        COMMENT ON COLUMN odos_crrs_svc.conf_rm.rm_capcity IS 'Capacity of the conference room'; 
+        COMMENT ON COLUMN odos_crrs_svc.conf_rm.rm_active_ind IS 'Indicator if the conference room is active'; 
+        COMMENT ON COLUMN odos_crrs_svc.conf_rm.bldg_id IS 'Building''s  primary id'; 
+      </sql>
+    </changeSet>
+</databaseChangeLog>

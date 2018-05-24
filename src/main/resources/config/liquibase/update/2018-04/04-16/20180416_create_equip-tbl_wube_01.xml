@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+	<changeSet id="2018-04-16-wube-01" author="Wube">
+		<sql>
+			create table odos_crrs_svc.equip 
+			(
+			equip_id serial not null,
+			equip_name varchar(200) not null,
+			equip_desc text not null,
+			primary key (equip_id)
+			);
+			COMMENT ON TABLE odos_crrs_svc.equip IS 'Represents the equipment'; 
+			COMMENT ON COLUMN odos_crrs_svc.equip.equip_id IS 'Primary key of the equipment'; 
+			COMMENT ON COLUMN odos_crrs_svc.equip.equip_name IS 'Name of the equipment'; 
+			COMMENT ON COLUMN odos_crrs_svc.equip.equip_desc IS 'Description of the equipment'; 
+		</sql>
+	</changeSet>
+</databaseChangeLog>

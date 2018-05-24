@@ -1,0 +1,1 @@
+CREATE DATABASE :databaseName OWNER :databaseAdminUser ENCODING = 'UTF8';

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+
+	<include file="config/liquibase/update/00000000000000_initial_schema.xml"
+		relativeToChangelogFile="false" />
+
+	<include
+		file="config/liquibase/update/2018-04/04-16/20180416_create_enums_wube_01.xml"
+		relativeToChangelogFile="false" />
+	<include
+		file="config/liquibase/update/2018-04/04-16/20180416_create_bldg-tbl_pychou_01.xml"
+		relativeToChangelogFile="false" />
+	<include
+		file="config/liquibase/update/2018-04/04-16/20180416_create_confrm-tbl_wube_01.xml"
+		relativeToChangelogFile="false" />
+	<include
+		file="config/liquibase/update/2018-04/04-16/20180416_create_equip-tbl_wube_01.xml"
+		relativeToChangelogFile="false" />
+	<include
+		file="config/liquibase/update/2018-04/04-16/20180416_create_conf_sched-tbl_wube_01.xml"
+		relativeToChangelogFile="false" />
+	<include
+		file="config/liquibase/update/2018-04/04-17/20180417_create_conf_rm_equip_pychou_01.xml"
+		relativeToChangelogFile="false" />
+
+
+</databaseChangeLog>

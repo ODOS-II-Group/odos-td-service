@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+    <changeSet id="2018-04-16-pychou-01" author="Patrick Chou">
+      <sql>
+        create table odos_crrs_svc.bldg 
+        (
+          bldg_id serial not null,
+          bldg_nm varchar(200) not null,
+          bldg_dsc varchar(200),
+          primary key (bldg_id)
+        );
+        COMMENT ON TABLE odos_crrs_svc.bldg IS 'Represents the conference building'; 
+        COMMENT ON COLUMN odos_crrs_svc.bldg.bldg_id IS 'Primary key of the conference building'; 
+        COMMENT ON COLUMN odos_crrs_svc.bldg.bldg_nm IS 'Name of the conference building'; 
+        COMMENT ON COLUMN odos_crrs_svc.bldg.bldg_dsc IS 'Description of the conference building';
+
+      </sql>
+    </changeSet>
+</databaseChangeLog>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+	<changeSet id="2018-04-16-wube-01" author="Wube">
+		<sql>
+			create table odos_crrs_svc.conf_sched 
+			(
+			conf_sch_id serial not null,
+			conf_rm_id int not null references odos_crrs_svc.conf_rm (conf_rm_id),
+			req_id varchar(50) not null,
+			start_dttm timestamp not null,
+			end_dttm timestamp not null,
+			conf_title varchar(200) not null,
+			primary key (conf_sch_id)
+			);
+			COMMENT ON TABLE odos_crrs_svc.conf_sched IS 'Represents the conference schedule'; 
+			COMMENT ON COLUMN odos_crrs_svc.conf_sched.conf_sch_id IS 'Primary key of the conference schedule'; 
+			COMMENT ON COLUMN odos_crrs_svc.conf_sched.req_id IS 'A unique identifier of a requestor'; 
+			COMMENT ON COLUMN odos_crrs_svc.conf_sched.conf_rm_id IS 'Primary key of the conference room'; 
+			COMMENT ON COLUMN odos_crrs_svc.conf_sched.start_dttm IS 'Start Date of the conference schedule'; 
+			COMMENT ON COLUMN odos_crrs_svc.conf_sched.end_dttm IS 'End Date of the conference schedule'; 
+			COMMENT ON COLUMN odos_crrs_svc.conf_sched.conf_title IS 'Tittle of the conference schedule'; 
+		</sql>
+	</changeSet>
+</databaseChangeLog>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+	<changeSet id="2018-04-17-pychou-01" author="Patrick Chou">
+		<sql>
+			create table odos_crrs_svc.conf_rm_equip (
+			conf_rm_equip_id serial not null,
+			conf_rm_id int not null references odos_crrs_svc.conf_rm (conf_rm_id),
+			equip_id int not null references odos_crrs_svc.equip (equip_id),
+			primary key (conf_rm_equip_id)
+			);
+		</sql>
+	</changeSet>
+</databaseChangeLog>
