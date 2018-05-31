@@ -2,6 +2,8 @@
 def Common = new odos.jenkins.Common()
 
 def GIT_URL=scm.getUserRemoteConfigs()[0].getUrl()
+def CONTAINER_NAME='td-svc'
+def OPENSHIFT_ENV='odos-ii-test'
 
 pipeline {
     agent any
@@ -55,7 +57,7 @@ pipeline {
             steps {
               script{
                 Common.slack 'Packaging into a container...'
-                Common.buildContainer('crrsvc')
+                Common.buildContainer("${CONTAINER_NAME}")
               }
             }
         }
@@ -63,7 +65,7 @@ pipeline {
             steps {
               script{
                 Common.slack 'Twistlock Scan...'
-                Common.twistlock("${DOCKER_REGISTRY}", 'crrsvc','latest')
+                Common.twistlock("${DOCKER_REGISTRY}", "${CONTAINER_NAME}",'latest')
               }
             }
         }
@@ -71,7 +73,7 @@ pipeline {
             steps {
               script{
                 Common.slack 'Push to Docker Registry..'
-                Common.pushContainer('crrsvc')
+                Common.pushContainer("${CONTAINER_NAME}")
               }
             }
         }
@@ -84,7 +86,7 @@ pipeline {
                   ./gradlew baseline liquibaseUpdate -PdatabaseHost=${TEST_DB_HOST} -PdatabaseAdmin=${TEST_DB_USER} -PdatabasePassword=${TEST_DB_PASS}
                   """
                 }
-                Common.deployToOpenShift('odos-ii-test','crrsvc','latest')
+                Common.deployToOpenShift("${OPENSHIFT_ENV}","${CONTAINER_NAME}",'latest')
               }
             }
         }
