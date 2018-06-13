@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import gov.dhs.uscis.odos.domain.ConferenceRoom;
 import gov.dhs.uscis.odos.repository.ConferenceRoomRepository;
+import gov.dhs.uscis.odos.repository.BuildingRepository;
 import gov.dhs.uscis.odos.service.ConferenceRoomService;
 import gov.dhs.uscis.odos.service.dto.ConferenceRoomDTO;
 import gov.dhs.uscis.odos.service.mapper.ConferenceRoomMapper;
@@ -30,6 +31,9 @@ public class ConferenceRoomServiceImpl implements ConferenceRoomService {
     private  ConferenceRoomRepository conferenceRoomRepository;
     
     @Inject
+    private  BuildingRepository buildingRepository;
+    
+    @Inject
     private ConferenceRoomMapper conferenceRoomMapper;
 
 
@@ -42,7 +46,9 @@ public class ConferenceRoomServiceImpl implements ConferenceRoomService {
     @Override
     public ConferenceRoomDTO save(ConferenceRoomDTO conferenceRoomDTO) {
     	log.debug("Request to save Conference Room : {}", conferenceRoomDTO);
-    	ConferenceRoom conferenceRoom = conferenceRoomRepository.save(conferenceRoomMapper.toEntity(conferenceRoomDTO));
+    	ConferenceRoom conferenceRoom = conferenceRoomMapper.toEntity(conferenceRoomDTO);
+    	conferenceRoom.setBuilding(buildingRepository.findOne(conferenceRoomDTO.getBuildingId()));
+    	conferenceRoom = conferenceRoomRepository.save(conferenceRoom);
         return conferenceRoomMapper.toDto(conferenceRoom);
     }
 
