@@ -18,7 +18,8 @@ public interface ConferenceRoomScheduleRepository extends JpaRepository<Conferen
 	
 	public List<ConferenceRoomSchedule> findAllByRequestorId(String requestorId);
 	
-	@Query("SELECT cs FROM ConferenceRoomSchedule cs inner join cs.conferenceRoom cf where cf.conferenceRoomId = :conferenceRoomId")
+	@Query("SELECT cs FROM ConferenceRoomSchedule cs inner join cs.conferenceRoom cf where cf.conferenceRoomId = :conferenceRoomId and "
+			+ " cs.roomScheduleStartTime >= CURRENT_DATE")
 	public List<ConferenceRoomSchedule> findAllByConferenceRoomId(@Param("conferenceRoomId") Long conferenceRoomId);
 	
 	
