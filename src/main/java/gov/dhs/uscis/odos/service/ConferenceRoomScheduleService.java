@@ -51,4 +51,12 @@ public interface ConferenceRoomScheduleService {
      * @return List<ConferenceRoomScheduleDTO>
      */
     List<ConferenceRoomScheduleDTO> findAllByConferenceRoom(long conferenceRoomId);
+    
+    /**
+     * Get all scheduled room today
+     * @param conferenceRoomId
+     * @return List<ConferenceRoomScheduleDTO>
+     */
+
+	int findAllScheduledRoomTodayById(Long id);
 }

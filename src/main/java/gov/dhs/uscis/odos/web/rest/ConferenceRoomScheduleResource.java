@@ -132,6 +132,20 @@ public class ConferenceRoomScheduleResource {
     }
 
     /**
+     * GET  /conference-room-schedule-today/:id : get the "id" conferenceRoomSchedule.
+     *
+     * @param id the id of the conferenceRoomScheduleDTO to retrieve
+     * @return the ResponseEntity with status 200 (OK) and with body the conferenceRoomScheduleDTO, or with status 404 (Not Found)
+     */
+    @GetMapping("/conference-room-schedule-today/{id}")
+    @Timed
+    //@PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
+    public int getAllScheduledRoomTodayById(@PathVariable Long id) {
+        log.debug("REST request to get ConferenceRoomSchedule : {}", id);
+        return conferenceRoomScheduleService.findAllScheduledRoomTodayById(id);
+    }
+    
+    /**
      * DELETE  /conference-room-schedule/:id : delete the "id" conferenceRoomSchedule.
      *
      * @param id the id of the conferenceRoomScheduleDTO to delete

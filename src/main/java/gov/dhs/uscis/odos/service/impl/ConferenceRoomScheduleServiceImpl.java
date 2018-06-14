@@ -110,4 +110,9 @@ public class ConferenceRoomScheduleServiceImpl implements ConferenceRoomSchedule
 				.stream().map(conferenceRoomScheduleMapper::toDto)
 				.collect(Collectors.toCollection(LinkedList::new));
 	}
+
+	@Override
+	public int findAllScheduledRoomTodayById(Long id) {
+		return conferenceRoomScheduleRepository.findAllScheduledRoomTodayByConferenceRoomI(id);
+	}
 }
