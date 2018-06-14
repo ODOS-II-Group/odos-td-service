@@ -1,12 +1,14 @@
 #!groovy
 def Common = new odos.jenkins.Common()
-def GIT_URL = "https://github.com/ODOS-II-code-challange/odos_crrs_service.git"
-
+// def GIT_URL = "https://github.com/ODOS-II-code-challange/odos_crrs_service.git"
+// def GIT_REPO = "ODOS-II-code-challange/odos_crrs_service"
+def GIT_REPO = "ODOS-II-Group/odos-td-service"
+def GIT_URL = "https://github.com/${GIT_REPO}.git"
 pipeline {
     agent any
 
     stages {
-             
+
         stage('Build') {
             steps {
                 script{
@@ -15,18 +17,18 @@ pipeline {
                 }
             }
         }
-     
+
         stage('Sonar Scan') {
           steps {
             script{
             Common.slack 'Sonar Scan for build request...'
-                       
+
              withCredentials([usernamePassword(credentialsId: 'sonar-jenkins', passwordVariable: 'SONAR_PASSWORD', usernameVariable: '')]) {
                   sh """
                         ./gradlew --full-stacktrace\
                         -Dsonar.host.url=http://localhost:9000 \
                         -Dsonar.github.endpoint=https://api.github.com \
-                        -Dsonar.github.repository=ODOS-II-code-challange/odos_crrs_service  \
+                        -Dsonar.github.repository=${GIT_REPO}  \
                         -Dsonar.projectKey=gov.dhs.uscis.odos:crrsvc \
                         -Dsonar.analysis.mode=preview \
                         -Dsonar.github.pullRequest=$ghprbPullId \
@@ -38,10 +40,10 @@ pipeline {
                         -x test sonarqube
                     """
             }
-               
+
             }
           }
-        
+
         }
          stage(' Compare Code Coverage') {
             steps {
@@ -49,7 +51,7 @@ pipeline {
                    withEnv(["GIT_URL=${GIT_URL}"]){
                         currentBuild.result = 'SUCCESS'
                         step([$class: 'CompareCoverageAction'])
-                        
+
                     }
                 }
             }
@@ -57,4 +59,3 @@ pipeline {
 
     }
 }
-
