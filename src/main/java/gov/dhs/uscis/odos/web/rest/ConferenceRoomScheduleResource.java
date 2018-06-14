@@ -29,6 +29,7 @@ import java.util.Optional;
  */
 @RestController
 @RequestMapping("/api")
+@CrossOrigin(exposedHeaders="Access-Control-Allow-Origin")
 public class ConferenceRoomScheduleResource {
 
     private final Logger log = LoggerFactory.getLogger(ConferenceRoomScheduleResource.class);
@@ -50,7 +51,7 @@ public class ConferenceRoomScheduleResource {
      */
     @PostMapping("/conference-room-schedule")
     @Timed
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
+   // //@PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
     public ResponseEntity<ConferenceRoomScheduleDTO> createConferenceRoomSchedule(@Valid @RequestBody ConferenceRoomScheduleDTO conferenceRoomScheduleDTO) throws URISyntaxException {
         log.debug("REST request to save ConferenceRoomSchedule : {}", conferenceRoomScheduleDTO);
         if (conferenceRoomScheduleDTO.getId() != null) {
@@ -73,7 +74,7 @@ public class ConferenceRoomScheduleResource {
      */
     @PutMapping("/conference-room-schedule")
     @Timed
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
+    //@PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
     public ResponseEntity<ConferenceRoomScheduleDTO> updateConferenceRoomSchedule(@Valid @RequestBody ConferenceRoomScheduleDTO conferenceRoomScheduleDTO) throws URISyntaxException {
         log.debug("REST request to update ConferenceRoomSchedule : {}", conferenceRoomScheduleDTO);
         if (conferenceRoomScheduleDTO.getId() == null) {
@@ -93,7 +94,7 @@ public class ConferenceRoomScheduleResource {
      */
     @GetMapping("/conference-room-schedule")
     @Timed
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
+    //@PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
     public ResponseEntity<List<ConferenceRoomScheduleDTO>> getAllConferenceRoomSchedules(Pageable pageable) {
         log.debug("REST request to get a page of ConferenceRoomSchedules");
         Page<ConferenceRoomScheduleDTO> page = conferenceRoomScheduleService.findAll(pageable);
@@ -109,11 +110,25 @@ public class ConferenceRoomScheduleResource {
      */
     @GetMapping("/conference-room-schedule/{id}")
     @Timed
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
+    //@PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
     public ResponseEntity<ConferenceRoomScheduleDTO> getConferenceRoomSchedule(@PathVariable Long id) {
         log.debug("REST request to get ConferenceRoomSchedule : {}", id);
         ConferenceRoomScheduleDTO conferenceRoomScheduleDTO = conferenceRoomScheduleService.findOne(id);
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(conferenceRoomScheduleDTO));
+    }
+    
+    /**
+     * GET  /conference-room-schedule/:id : get the "id" conferenceRoomSchedule.
+     *
+     * @param id the id of the conferenceRoomScheduleDTO to retrieve
+     * @return the ResponseEntity with status 200 (OK) and with body the conferenceRoomScheduleDTO, or with status 404 (Not Found)
+     */
+    @GetMapping("/conference-room-schedule-info/{id}")
+    @Timed
+    //@PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
+    public List<ConferenceRoomScheduleDTO> getAllConferenceRoomSchedule(@PathVariable Long id) {
+        log.debug("REST request to get ConferenceRoomSchedule : {}", id);
+        return conferenceRoomScheduleService.findAllByConferenceRoom(id);
     }
 
     /**
@@ -124,7 +139,7 @@ public class ConferenceRoomScheduleResource {
      */
     @DeleteMapping("/conference-room-schedule/{id}")
     @Timed
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
+    //@PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
     public ResponseEntity<Void> deleteConferenceRoomSchedule(@PathVariable Long id) {
         log.debug("REST request to delete ConferenceRoomSchedule : {}", id);
         conferenceRoomScheduleService.delete(id);
