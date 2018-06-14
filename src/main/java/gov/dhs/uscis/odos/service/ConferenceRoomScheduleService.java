@@ -44,4 +44,19 @@ public interface ConferenceRoomScheduleService {
     void delete(Long id);
     
     List<ConferenceRoomScheduleDTO> findByRequestId(String requestorId);
+    
+    /**
+     * Get all scheduled room information
+     * @param conferenceRoomId
+     * @return List<ConferenceRoomScheduleDTO>
+     */
+    List<ConferenceRoomScheduleDTO> findAllByConferenceRoom(long conferenceRoomId);
+    
+    /**
+     * Get all scheduled room today
+     * @param conferenceRoomId
+     * @return List<ConferenceRoomScheduleDTO>
+     */
+
+	int findAllScheduledRoomTodayById(Long id);
 }

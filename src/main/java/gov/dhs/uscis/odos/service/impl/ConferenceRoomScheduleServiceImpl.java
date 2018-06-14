@@ -99,8 +99,20 @@ public class ConferenceRoomScheduleServiceImpl implements ConferenceRoomSchedule
 
 	@Override
 	public List<ConferenceRoomScheduleDTO> findByRequestId(String requestorId) {
-		return conferenceRoomScheduleRepository.findByRequestorId(requestorId)
+		return conferenceRoomScheduleRepository.findAllByRequestorId(requestorId)
 				.stream().map(conferenceRoomScheduleMapper::toDto)
 				.collect(Collectors.toCollection(LinkedList::new));
+	}
+
+	@Override
+	public List<ConferenceRoomScheduleDTO> findAllByConferenceRoom(long conferenceRoomId) {
+		return conferenceRoomScheduleRepository.findAllByConferenceRoomId(conferenceRoomId)
+				.stream().map(conferenceRoomScheduleMapper::toDto)
+				.collect(Collectors.toCollection(LinkedList::new));
+	}
+
+	@Override
+	public int findAllScheduledRoomTodayById(Long id) {
+		return conferenceRoomScheduleRepository.findAllScheduledRoomTodayByConferenceRoomI(id);
 	}
 }
