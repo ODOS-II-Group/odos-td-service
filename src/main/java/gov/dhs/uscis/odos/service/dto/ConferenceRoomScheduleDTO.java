@@ -40,6 +40,9 @@ public class ConferenceRoomScheduleDTO implements Serializable {
     
     @NotNull
     private String lastName;
+    
+    @NotNull
+    private String conferenceDescription;
 
     public Long getId() {
         return id;
@@ -119,6 +122,14 @@ public class ConferenceRoomScheduleDTO implements Serializable {
 
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
+	}
+
+	public String getConferenceDescription() {
+		return conferenceDescription;
+	}
+
+	public void setConferenceDescription(String conferenceDescription) {
+		this.conferenceDescription = conferenceDescription;
 	}
 
 	@Override
