@@ -49,6 +49,7 @@ public class ConferenceRoomMapper implements EntityMapper<ConferenceRoomDTO, Con
 		}
 		conferenceRoomDTO.setSchedule(scheduleDTO);
 		conferenceRoomDTO.setBuildingId(entity.getBuilding().getBuildingId());
+		conferenceRoomDTO.setBuildingName(entity.getBuilding().getBuildingName());
 		
 		return conferenceRoomDTO;
 	}

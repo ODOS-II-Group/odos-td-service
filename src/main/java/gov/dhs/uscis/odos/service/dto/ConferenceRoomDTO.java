@@ -32,6 +32,8 @@ public class ConferenceRoomDTO implements Serializable {
     private List<ConferenceRoomScheduleDTO> schedule;
     
     private Long buildingId;
+    
+    private String buildingName;
 
     public Long getConferenceRoomId() {
 		return conferenceRoomId;
@@ -97,6 +99,14 @@ public class ConferenceRoomDTO implements Serializable {
 		this.buildingId = buildingId;
 	}
 
+    public String getBuildingName() {
+        return buildingName;
+    }
+
+    public void setBuildingName(String buildingName) {
+        this.buildingName = buildingName;
+    }
+    
 	@Override
     public boolean equals(Object o) {
         if (this == o) {
