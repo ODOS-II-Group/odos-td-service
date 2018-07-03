@@ -91,9 +91,15 @@ if (OperatingSystem.current().isWindows()) {
 } else {
     bootRun {
         addResources = false
+        environment "CRRSVC_DB_HOST", "${databaseHost}"
+	    environment "CRRSVC_DATABASE_PORT", "${databasePort}"
+	    environment "CRRSVC_DATABASE_NAME", "${databaseName}"
+	    environment "CRRSVC_DATABASE_USERNAME", "${databaseAppRole}"
+	    environment "CRRSVC_DATABASE_PASSWORD", "${databaseAppPassword}"
+		environment "CRRSVC_SHOW_SQL", "${showSql}"
     }
 }
-
+        
 test {
     exclude '**/CucumberTest*'
 	
