@@ -14,7 +14,9 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import gov.dhs.uscis.odos.domain.Building;
 import gov.dhs.uscis.odos.domain.ConferenceRoom;
+import gov.dhs.uscis.odos.repository.BuildingRepository;
 import gov.dhs.uscis.odos.repository.ConferenceRoomRepository;
 import gov.dhs.uscis.odos.service.dto.ConferenceRoomDTO;
 import gov.dhs.uscis.odos.service.mapper.ConferenceRoomMapper;
@@ -26,6 +28,8 @@ public class ConferenceRoomServiceImplTest {
 	ConferenceRoomServiceImpl conferenceRoomServiceImpl;
 	@Mock
     private  ConferenceRoomRepository conferenceRoomRepository;
+	@Mock
+	private BuildingRepository buildingRepository;
 	@Mock
     private ConferenceRoomMapper conferenceRoomMapper;
 	
@@ -41,14 +45,17 @@ public class ConferenceRoomServiceImplTest {
 	public void setup() {
 		conferenceRoomDTO = new ConferenceRoomDTO();
 		conferenceRoomDTO.setConferenceRoomId(10L);
+		conferenceRoomDTO.setBuildingId(11L);
 		conferenceRoom = new ConferenceRoom();
 		confRoomList = new ArrayList<>();
 		confRoomList.add(conferenceRoom);
+		Building building = new Building();
 		Mockito.when(conferenceRoomMapper.toEntity(conferenceRoomDTO)).thenReturn(conferenceRoom);
 		Mockito.when(conferenceRoomRepository.save(conferenceRoom)).thenReturn(conferenceRoom);
 		Mockito.when(conferenceRoomMapper.toDto(conferenceRoom)).thenReturn(conferenceRoomDTO);
 		Mockito.when(conferenceRoomRepository.findAll()).thenReturn(confRoomList);
 		Mockito.when(conferenceRoomRepository.findOne(10L)).thenReturn(conferenceRoom);
+		Mockito.when(buildingRepository.findOne(conferenceRoomDTO.getBuildingId())).thenReturn(building);
 	}
 	
 	
