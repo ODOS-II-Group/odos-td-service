@@ -34,6 +34,11 @@ public class ConferenceRoomMapper implements EntityMapper<ConferenceRoomDTO, Con
 	}
 
 	@Override
+	public void toEntity(ConferenceRoomDTO dto, ConferenceRoom confRoom) {	
+		mapper.map(dto, confRoom);
+	}
+	
+	@Override
 	public ConferenceRoomDTO toDto(ConferenceRoom entity) {
 		List<EquipmentDTO> equipmentDTO = new ArrayList<>();
 		Validate.notNull(entity, "The ConferenceRoom entity must not be null");

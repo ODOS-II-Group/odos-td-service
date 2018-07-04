@@ -26,6 +26,11 @@ public class EquipmentMapper implements EntityMapper<EquipmentDTO, Equipment> {
 	}
 
 	@Override
+	public void toEntity(EquipmentDTO dto, Equipment equipment) {
+		mapper.map(dto, equipment);
+	}
+	
+	@Override
 	public EquipmentDTO toDto(Equipment entity) {
 		EquipmentDTO equipmentDTO = mapper.map(entity, EquipmentDTO.class);
 		return equipmentDTO;
