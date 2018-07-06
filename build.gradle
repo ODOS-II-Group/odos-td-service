@@ -91,12 +91,6 @@ if (OperatingSystem.current().isWindows()) {
 } else {
     bootRun {
         addResources = false
-        environment "CRRSVC_DB_HOST", "${databaseHost}"
-	    environment "CRRSVC_DATABASE_PORT", "${databasePort}"
-	    environment "CRRSVC_DATABASE_NAME", "${databaseName}"
-	    environment "CRRSVC_DATABASE_USERNAME", "${databaseAppRole}"
-	    environment "CRRSVC_DATABASE_PASSWORD", "${databaseAppPassword}"
-		environment "CRRSVC_SHOW_SQL", "${showSql}"
     }
 }
         
@@ -114,9 +108,14 @@ task testReport(type: TestReport) {
     reportOn test
 }
 
-tasks.withType(Test) {
-	environment "databaseAppPassword", "${databaseAppPassword}"
-	environment "databaseHost", "${databaseHost}"
+[test, bootRun].each { task ->
+        task.systemProperty "CRRSVC_DB_HOST", "${databaseHost}"
+	    task.systemProperty "CRRSVC_DATABASE_PORT", "${databasePort}"
+	    task.systemProperty "CRRSVC_DATABASE_NAME", "${databaseName}"
+	    task.systemProperty "CRRSVC_DATABASE_SCHEMA", "${databaseSchema}"
+	    task.systemProperty "CRRSVC_DATABASE_USERNAME", "${databaseAppRole}"
+	    task.systemProperty "CRRSVC_DATABASE_PASSWORD", "${databaseAppPassword}"
+		task.systemProperty "CRRSVC_SHOW_SQL", "${showSql}"
 }
 
 apply from: 'gradle/docker.gradle'
