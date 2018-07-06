@@ -48,6 +48,7 @@ public class ConferenceRoomServiceImplTest {
 	public void setup() {
 		conferenceRoomDTO = new ConferenceRoomDTO();
 		conferenceRoomDTO.setConferenceRoomId(10L);
+		conferenceRoomDTO.setBuildingId(11L);
 		conferenceRoom = new ConferenceRoom();
 		Building bldg = new Building();
 		bldg.setBuildingId(1L);
@@ -59,6 +60,7 @@ public class ConferenceRoomServiceImplTest {
 		Mockito.when(conferenceRoomMapper.toDto(conferenceRoom)).thenReturn(conferenceRoomDTO);
 		Mockito.when(conferenceRoomRepository.findAll()).thenReturn(confRoomList);
 		Mockito.when(conferenceRoomRepository.findOne(10L)).thenReturn(conferenceRoom);
+		Mockito.when(buildingRepository.findOne(conferenceRoomDTO.getBuildingId())).thenReturn(bldg);
 	}
 	
 	
