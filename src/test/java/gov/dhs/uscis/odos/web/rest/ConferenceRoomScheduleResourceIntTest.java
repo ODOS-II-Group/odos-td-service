@@ -82,7 +82,7 @@ public class ConferenceRoomScheduleResourceIntTest extends BaseIntegrationTest {
 
     @Autowired
     private ExceptionTranslator exceptionTranslator;
-
+    
     @Autowired
     private EntityManager em;
 
@@ -99,6 +99,8 @@ public class ConferenceRoomScheduleResourceIntTest extends BaseIntegrationTest {
             .setControllerAdvice(exceptionTranslator)
             .setConversionService(createFormattingConversionService())
             .setMessageConverters(jacksonMessageConverter).build();
+        
+        conferenceRoomSchedule = createEntity(em);
     }
 
     /**
@@ -107,37 +109,39 @@ public class ConferenceRoomScheduleResourceIntTest extends BaseIntegrationTest {
      * This is a static method, as tests for other entities might also need it,
      * if they test an entity which requires the current entity.
      */
-    public ConferenceRoomSchedule createEntity(EntityManager em) {
+    private ConferenceRoomSchedule createEntity(EntityManager em) {
         ConferenceRoomSchedule conferenceRoomSchedule = new ConferenceRoomSchedule()
             .requestorId(DEFAULT_REQUESTOR_ID)
             .roomScheduleStartTime(convertDateString(DEFAULT_ROOM_SCHEDULE_START_TIME, "yyyy-MM-dd HH:mm"))
             .roomScheduleEndTime(convertDateString(DEFAULT_ROOM_SCHEDULE_END_TIME, "yyyy-MM-dd HH:mm"))
-            .conferenceTitle(DEFAULT_CONFERENCE_TITLE);
-        
-		Building building = new Building();
-		building.setBuildingDesc("Building One");
-		building.setBuildingName("BLDG1");
-		
-		ConferenceRoom room = new ConferenceRoom();
-		room.setRoomName("ATOMICS");
-		room.setRoomNum("23");
-		room.setRoomCapacity(10);
-		room.setBuilding(building);
+            .conferenceTitle(DEFAULT_CONFERENCE_TITLE)
+            .firstName("John")
+            .lastName("Adams");
 
-        conferenceRoomSchedule.setConferenceRoom(room);
+        conferenceRoomSchedule.setConferenceRoom(createConferenceRoom());
         
         return conferenceRoomSchedule;
     }
 
-    @Before
-    public void initTest() {
-        conferenceRoomSchedule = createEntity(em);
+    private Building createBulding() {
+		Building building = new Building();
+		building.setBuildingDesc("Building One");
+		building.setBuildingName("BLDG1");
+		return building;
     }
-
+    
+    private ConferenceRoom createConferenceRoom() {
+		ConferenceRoom room = new ConferenceRoom();
+		room.setRoomName("ATOMICS");
+		room.setRoomNum("23");
+		room.setRoomCapacity(10);
+		room.setBuilding(createBulding());
+		return room;
+    }
+    
     @Test
     @Transactional
     public void createConferenceRoomSchedule() throws Exception {
-        int databaseSizeBeforeCreate = conferenceRoomScheduleRepository.findAll().size();
 
         // Create the ConferenceRoomSchedule
         ConferenceRoomScheduleDTO conferenceRoomScheduleDTO = conferenceRoomScheduleMapper.toDto(conferenceRoomSchedule);
@@ -272,7 +276,6 @@ public class ConferenceRoomScheduleResourceIntTest extends BaseIntegrationTest {
     public void updateConferenceRoomSchedule() throws Exception {
         // Initialize the database
         conferenceRoomScheduleRepository.saveAndFlush(conferenceRoomSchedule);
-        int databaseSizeBeforeUpdate = conferenceRoomScheduleRepository.findAll().size();
 
         // Update the conferenceRoomSchedule
         ConferenceRoomSchedule updatedConferenceRoomSchedule = conferenceRoomScheduleRepository.findOne(conferenceRoomSchedule.getId());
@@ -295,7 +298,6 @@ public class ConferenceRoomScheduleResourceIntTest extends BaseIntegrationTest {
     @Test
     @Transactional
     public void updateNonExistingConferenceRoomSchedule() throws Exception {
-        int databaseSizeBeforeUpdate = conferenceRoomScheduleRepository.findAll().size();
 
         // Create the ConferenceRoomSchedule
         ConferenceRoomScheduleDTO conferenceRoomScheduleDTO = conferenceRoomScheduleMapper.toDto(conferenceRoomSchedule);
