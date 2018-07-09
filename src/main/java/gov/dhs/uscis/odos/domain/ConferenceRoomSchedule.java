@@ -54,6 +54,10 @@ public class ConferenceRoomSchedule implements Serializable {
     @Column(name = "last_name")
     private String lastName;
     
+    @Column(name = "conference_description")
+    private String conferenceDescription;
+
+    
     @ManyToOne(targetEntity = ConferenceRoom.class,cascade = CascadeType.ALL)
 	@JoinColumn(name = "conf_rm_id")
 	private ConferenceRoom conferenceRoom;
@@ -148,6 +152,14 @@ public class ConferenceRoomSchedule implements Serializable {
 
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
+	}
+	
+	public String getConferenceDescription() {
+		return conferenceDescription;
+	}
+
+	public void setConferenceDescription(String conferenceDescription) {
+		this.conferenceDescription = conferenceDescription;
 	}
 
 	public ConferenceRoomSchedule lastName(String lastName) {
