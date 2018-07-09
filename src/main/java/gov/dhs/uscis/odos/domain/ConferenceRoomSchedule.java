@@ -162,6 +162,11 @@ public class ConferenceRoomSchedule implements Serializable {
 		this.conferenceDescription = conferenceDescription;
 	}
 
+	public ConferenceRoomSchedule conferenceDescription(String conferenceDescription) {
+        this.conferenceDescription = conferenceDescription;
+        return this;
+    }
+	
 	public ConferenceRoomSchedule lastName(String lastName) {
         this.lastName = lastName;
         return this;

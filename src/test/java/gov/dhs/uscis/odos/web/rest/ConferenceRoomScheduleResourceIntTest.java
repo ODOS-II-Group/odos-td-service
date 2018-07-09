@@ -67,6 +67,7 @@ public class ConferenceRoomScheduleResourceIntTest extends BaseIntegrationTest {
 
     private static final String DEFAULT_CONFERENCE_TITLE = "AAAAAAAAAA";
     private static final String UPDATED_CONFERENCE_TITLE = "BBBBBBBBBB";
+    private static final String DEFAULT_CONFERENCE_DESC = "Test Conference";
 
     private static final Logger log  = LoggerFactory.getLogger(ConferenceRoomScheduleResourceIntTest.class);
     
@@ -120,6 +121,7 @@ public class ConferenceRoomScheduleResourceIntTest extends BaseIntegrationTest {
             .roomScheduleStartTime(convertDateString(DEFAULT_ROOM_SCHEDULE_START_TIME, "yyyy-MM-dd HH:mm"))
             .roomScheduleEndTime(convertDateString(DEFAULT_ROOM_SCHEDULE_END_TIME, "yyyy-MM-dd HH:mm"))
             .conferenceTitle(DEFAULT_CONFERENCE_TITLE)
+            .conferenceDescription(DEFAULT_CONFERENCE_DESC)
             .firstName("John")
             .lastName("Adams");
 
