@@ -41,7 +41,12 @@ pipeline {
           steps {
             script{
               Common.slack 'Sonar Scan and Upload...'
-              Common.sonarScan()
+              // Common.sonarScan()
+              withCredentials([usernamePassword(credentialsId: 'TEST_DB_USER_PASS', passwordVariable: 'TEST_DB_PASS', usernameVariable: 'TEST_DB_USER')]) {
+             	 sh """
+               		${baseDir}/gradlew sonarqube -PdatabaseHost=${TEST_DB_HOST} -PdatabaseAdmin=${TEST_DB_USER} -PdatabaseAppPassword=${TEST_DB_PASS} -PdatabaseName=odos_test_svc --stacktrace || true
+                 	"""
+              	}
             }
           }
         }
@@ -77,16 +82,18 @@ pipeline {
               }
             }
         }
+
+        // oc import-image td-svc --from='docker.lassiterdynamics.com:5000/td-svc:latest'  --confirm
         stage('Test Deploy') {
             steps {
               script{
                 Common.slack 'Deploying to Test Environment...'
                 withCredentials([usernamePassword(credentialsId: 'TEST_DB_USER_PASS', passwordVariable: 'TEST_DB_PASS', usernameVariable: 'TEST_DB_USER')]) {
                   sh """
-                  ./gradlew baseline liquibaseUpdate -PdatabaseHost=${TEST_DB_HOST} -PdatabaseAdmin=${TEST_DB_USER} -PdatabasePassword=${TEST_DB_PASS}
+                  ./gradlew baseline liquibaseUpdate -PdatabaseHost=${TEST_DB_HOST} -PdatabaseAdmin=${TEST_DB_USER} -PdatabasePassword=${TEST_DB_PASS} -PdatabaseName=odos_test_svc
                   """
                 }
-                Common.deployToOpenShift("${OPENSHIFT_ENV}","${CONTAINER_NAME}",'latest')
+                // Common.deployToOpenShift("${OPENSHIFT_ENV}","${CONTAINER_NAME}",'latest')
               }
             }
         }
