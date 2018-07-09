@@ -93,10 +93,10 @@ if (OperatingSystem.current().isWindows()) {
         addResources = false
     }
 }
-        
+
 test {
     exclude '**/CucumberTest*'
-	
+
     // uncomment if the tests reports are not generated
     // see https://github.com/jhipster/generator-jhipster/pull/2771 and https://github.com/jhipster/generator-jhipster/pull/4484
     // ignoreFailures true
@@ -185,6 +185,7 @@ dependencies {
     compile "org.hibernate:hibernate-validator"
     compile "org.liquibase:liquibase-core"
     compile "com.mattbertolini:liquibase-slf4j"
+    compile "org.springframework:spring-aop"
     compile "org.springframework.boot:spring-boot-actuator"
     compile "org.springframework.boot:spring-boot-autoconfigure"
     compile "org.springframework.boot:spring-boot-loader-tools"
@@ -220,7 +221,7 @@ dependencies {
     compile "org.postgresql:postgresql"
     compile "net.sf.dozer:dozer:5.5.1"
     compile 'joda-time:joda-time:2.9.9'
-    
+
     testCompile "com.jayway.jsonpath:json-path"
     testCompile ("org.springframework.boot:spring-boot-starter-test") {
         exclude group: 'com.vaadin.external.google', module: 'android-json'
@@ -237,7 +238,7 @@ dependencies {
         exclude group: 'com.vaadin.external.google', module: 'android-json'
     }
     testCompile "org.springframework:spring-test"
-    
+
     //jhipster-needle-gradle-dependency - JHipster will add additional dependencies here
 }
 
