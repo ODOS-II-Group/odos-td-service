@@ -29,10 +29,15 @@ pipeline {
 		  steps {
 		  	script{
 		      Common.slack 'Running liquibase baseline and update...'
-		      withCredentials([usernamePassword(credentialsId: 'TEST_DB_USER_PASS', passwordVariable: 'TEST_DB_PASS', usernameVariable: 'TEST_DB_USER')]) {
-		      sh """
-		      ./gradlew baselineTest liquibaseUpdate -PdatabaseHost=${TEST_DB_HOST} -PdatabaseAdmin=${TEST_DB_USER} -PdatabasePassword=${TEST_DB_PASS}
-		      """
+          withCredentials([
+            usernamePassword(credentialsId: 'TEST_DB_USER_PASS', passwordVariable: 'TEST_DB_PASS', usernameVariable: 'TEST_DB_USER'),
+            usernamePassword(credentialsId: 'TEST_DB_APP_USER_PASS', passwordVariable: 'TEST_DB_APP_PASS', usernameVariable: 'TEST_DB_APP_USER')
+            ]) {
+              sh """
+              ./gradlew baselineTest liquibaseUpdate -PdatabaseHost=${TEST_DB_HOST} -PdatabasePort=5432 -PdatabaseName=pipeline_svc -PdatabaseSchema=odos_crrs_svc -PdatabaseAppRole=pipeline_svc -PdatabaseAppPassword=${TEST_DB_APP_PASS} -PshowSql=false -PdatabaseAdmin=${TEST_DB_USER} -PdatabasePassword=${TEST_DB_PASS} --stacktrace
+    		      """
+          // ./gradlew baselineTest liquibaseUpdate -PdatabaseHost=${TEST_DB_HOST} -PdatabaseAdmin=${TEST_DB_USER} -PdatabasePassword=${TEST_DB_PASS} -PdatabaseName=odos_test_svc
+
 		        }
 		      }
 		    }
@@ -42,9 +47,12 @@ pipeline {
             script{
               Common.slack 'Sonar Scan and Upload...'
               // Common.sonarScan()
-              withCredentials([usernamePassword(credentialsId: 'TEST_DB_USER_PASS', passwordVariable: 'TEST_DB_PASS', usernameVariable: 'TEST_DB_USER')]) {
-             	 sh """
-               		${baseDir}/gradlew sonarqube -PdatabaseHost=${TEST_DB_HOST} -PdatabaseAdmin=${TEST_DB_USER} -PdatabaseAppPassword=${TEST_DB_PASS} -PdatabaseName=odos_test_svc --stacktrace || true
+              withCredentials([
+                usernamePassword(credentialsId: 'TEST_DB_USER_PASS', passwordVariable: 'TEST_DB_PASS', usernameVariable: 'TEST_DB_USER'),
+                usernamePassword(credentialsId: 'TEST_DB_APP_USER_PASS', passwordVariable: 'TEST_DB_APP_PASS', usernameVariable: 'TEST_DB_APP_USER')
+                ]) {
+             	    sh """
+               		 ./gradlew sonarqube -PdatabaseHost=${TEST_DB_HOST} -PdatabasePort=5432 -PdatabaseName=pipeline_svc -PdatabaseSchema=odos_crrs_svc -PdatabaseAppRole=pipeline_svc -PdatabaseAppPassword=${TEST_DB_APP_PASS} -PshowSql=false -PdatabaseAdmin=${TEST_DB_USER} -PdatabasePassword=${TEST_DB_PASS} --stacktrace
                  	"""
               	}
             }
