@@ -18,6 +18,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 import gov.dhs.uscis.odos.domain.Building;
 import gov.dhs.uscis.odos.domain.ConferenceRoom;
 import gov.dhs.uscis.odos.domain.ConferenceRoomEquipment;
+import gov.dhs.uscis.odos.domain.ConferenceRoomSchedule;
 import gov.dhs.uscis.odos.domain.Equipment;
 import gov.dhs.uscis.odos.service.dto.ConferenceRoomDTO;
 import gov.dhs.uscis.odos.service.dto.EquipmentDTO;
@@ -64,10 +65,16 @@ public class ConferenceRoomMapperTest {
 	}
 
 	@Test
+	public void testToEntity2() {
+		ConferenceRoom entity = new ConferenceRoom();
+		conferenceRoomMapper.toEntity(conferenceRoomDTO, entity);
+		assertNotNull(entity);
+	}
+	
+	@Test
 	public void testToDto() {
 		ConferenceRoomDTO dtoReturn=  conferenceRoomMapper.toDto(conferenceRoom);
 		assertEquals(conferenceRoomDTO, dtoReturn);
-		
 	}
 
 	@Test
@@ -78,7 +85,6 @@ public class ConferenceRoomMapperTest {
 		assertEquals(dtoList.size(), 1);
 	}
 
-
 	@Test
 	public void testToDtoFromList() {
 		List<ConferenceRoom> entityList = new ArrayList<ConferenceRoom>();
@@ -86,6 +92,5 @@ public class ConferenceRoomMapperTest {
 		List<ConferenceRoomDTO> dtoList=  conferenceRoomMapper.toDto(entityList);
 		assertEquals(dtoList.size(), 1);
 	}
-
 
 }

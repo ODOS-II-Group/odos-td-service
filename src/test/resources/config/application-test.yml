@@ -38,19 +38,19 @@ spring:
         database-platform: io.github.jhipster.domain.util.FixedPostgreSQL82Dialect
         
         properties:
-            hibernate.default_schema: ${databaseSchema:odos_crrs_svc}
+            hibernate.default_schema: ${CRRSVC_DATABASE_SCHEMA:odos_crrs_svc}
             hibernate.id.new_generator_mappings: true
             hibernate.cache.use_second_level_cache: true
             hibernate.cache.use_query_cache: false
             hibernate.generate_statistics: true
-            hibernate.show_sql: false
+            hibernate.show_sql: ${CRRSVC_SHOW_SQL:false}
             hibernate.cache.region.factory_class: io.github.jhipster.config.jcache.NoDefaultJCacheRegionFactory               
     datasource:
         platform: POSTGRESSQL
         type: com.zaxxer.hikari.HikariDataSource
-        url: jdbc:postgresql://${databaseHost:localhost}:${databasePort:5432}/${databaseName:odos_crrs_svc}?stringtype=unspecified
-        username: ${databaseAppRole:odos_crrs_svc_app}
-        password: ${databaseAppPassword:0d0sP455}
+        url: jdbc:postgresql://${CRRSVC_DB_HOST:localhost}:${CRRSVC_DATABASE_PORT:5432}/${CRRSVC_DATABASE_NAME:odos_test_svc}?stringtype=unspecified
+        username: ${CRRSVC_DATABASE_USERNAME:odos_crrs_svc_app}
+        password: ${CRRSVC_DATABASE_PASSWORD:0d0sP455}
         tomcat:
           validation-query: SELECT 1
         driverClassName: org.postgresql.Driver

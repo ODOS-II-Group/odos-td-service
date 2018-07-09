@@ -26,12 +26,15 @@ public class ConferenceRoomServiceImplTest {
 	
 	@InjectMocks
 	ConferenceRoomServiceImpl conferenceRoomServiceImpl;
+	
 	@Mock
     private  ConferenceRoomRepository conferenceRoomRepository;
-	@Mock
-	private BuildingRepository buildingRepository;
+	
 	@Mock
     private ConferenceRoomMapper conferenceRoomMapper;
+	
+	@Mock
+	private BuildingRepository buildingRepository;
 	
 	private ConferenceRoomDTO conferenceRoomDTO;
 	
@@ -47,15 +50,17 @@ public class ConferenceRoomServiceImplTest {
 		conferenceRoomDTO.setConferenceRoomId(10L);
 		conferenceRoomDTO.setBuildingId(11L);
 		conferenceRoom = new ConferenceRoom();
+		Building bldg = new Building();
+		bldg.setBuildingId(1L);
 		confRoomList = new ArrayList<>();
 		confRoomList.add(conferenceRoom);
-		Building building = new Building();
+		Mockito.when(buildingRepository.findOne(Mockito.anyLong())).thenReturn(bldg);
 		Mockito.when(conferenceRoomMapper.toEntity(conferenceRoomDTO)).thenReturn(conferenceRoom);
 		Mockito.when(conferenceRoomRepository.save(conferenceRoom)).thenReturn(conferenceRoom);
 		Mockito.when(conferenceRoomMapper.toDto(conferenceRoom)).thenReturn(conferenceRoomDTO);
 		Mockito.when(conferenceRoomRepository.findAll()).thenReturn(confRoomList);
 		Mockito.when(conferenceRoomRepository.findOne(10L)).thenReturn(conferenceRoom);
-		Mockito.when(buildingRepository.findOne(conferenceRoomDTO.getBuildingId())).thenReturn(building);
+		Mockito.when(buildingRepository.findOne(conferenceRoomDTO.getBuildingId())).thenReturn(bldg);
 	}
 	
 	

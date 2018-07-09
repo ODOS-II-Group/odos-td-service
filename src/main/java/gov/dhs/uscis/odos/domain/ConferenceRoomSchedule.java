@@ -141,6 +141,11 @@ public class ConferenceRoomSchedule implements Serializable {
 		this.firstName = firstName;
 	}
 
+	public ConferenceRoomSchedule firstName(String firstName) {
+        this.firstName = firstName;
+        return this;
+    }
+	
 	public String getLastName() {
 		return lastName;
 	}
@@ -157,6 +162,11 @@ public class ConferenceRoomSchedule implements Serializable {
 		this.conferenceDescription = conferenceDescription;
 	}
 
+	public ConferenceRoomSchedule lastName(String lastName) {
+        this.lastName = lastName;
+        return this;
+    }
+	
 	@Override
     public boolean equals(Object o) {
         if (this == o) {

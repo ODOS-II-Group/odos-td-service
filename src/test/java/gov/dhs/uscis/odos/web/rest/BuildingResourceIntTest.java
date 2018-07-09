@@ -223,7 +223,7 @@ public class BuildingResourceIntTest extends BaseIntegrationTest {
         BuildingDTO buildingDTO = buildingMapper.toDto(building);
 
         // If the entity doesn't have an ID, it will be created instead of just being updated
-        restBuildingMockMvc.perform(put("/api/buildings")
+        restBuildingMockMvc.perform(post("/api/buildings")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(buildingDTO)))
             .andExpect(status().is2xxSuccessful());

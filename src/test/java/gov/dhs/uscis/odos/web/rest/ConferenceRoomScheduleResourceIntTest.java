@@ -3,6 +3,10 @@ package gov.dhs.uscis.odos.web.rest;
 import static gov.dhs.uscis.odos.web.rest.TestUtil.createFormattingConversionService;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -15,6 +19,7 @@ import java.text.ParseException;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -82,7 +87,7 @@ public class ConferenceRoomScheduleResourceIntTest extends BaseIntegrationTest {
 
     @Autowired
     private ExceptionTranslator exceptionTranslator;
-
+    
     @Autowired
     private EntityManager em;
 
@@ -99,6 +104,8 @@ public class ConferenceRoomScheduleResourceIntTest extends BaseIntegrationTest {
             .setControllerAdvice(exceptionTranslator)
             .setConversionService(createFormattingConversionService())
             .setMessageConverters(jacksonMessageConverter).build();
+        
+        conferenceRoomSchedule = createEntity(em);
     }
 
     /**
@@ -107,37 +114,39 @@ public class ConferenceRoomScheduleResourceIntTest extends BaseIntegrationTest {
      * This is a static method, as tests for other entities might also need it,
      * if they test an entity which requires the current entity.
      */
-    public ConferenceRoomSchedule createEntity(EntityManager em) {
+    private ConferenceRoomSchedule createEntity(EntityManager em) {
         ConferenceRoomSchedule conferenceRoomSchedule = new ConferenceRoomSchedule()
             .requestorId(DEFAULT_REQUESTOR_ID)
             .roomScheduleStartTime(convertDateString(DEFAULT_ROOM_SCHEDULE_START_TIME, "yyyy-MM-dd HH:mm"))
             .roomScheduleEndTime(convertDateString(DEFAULT_ROOM_SCHEDULE_END_TIME, "yyyy-MM-dd HH:mm"))
-            .conferenceTitle(DEFAULT_CONFERENCE_TITLE);
-        
-		Building building = new Building();
-		building.setBuildingDesc("Building One");
-		building.setBuildingName("BLDG1");
-		
-		ConferenceRoom room = new ConferenceRoom();
-		room.setRoomName("ATOMICS");
-		room.setRoomNum("23");
-		room.setRoomCapacity(10);
-		room.setBuilding(building);
+            .conferenceTitle(DEFAULT_CONFERENCE_TITLE)
+            .firstName("John")
+            .lastName("Adams");
 
-        conferenceRoomSchedule.setConferenceRoom(room);
+        conferenceRoomSchedule.setConferenceRoom(createConferenceRoom());
         
         return conferenceRoomSchedule;
     }
 
-    @Before
-    public void initTest() {
-        conferenceRoomSchedule = createEntity(em);
+    private Building createBulding() {
+		Building building = new Building();
+		building.setBuildingDesc("Building One");
+		building.setBuildingName("BLDG1");
+		return building;
     }
-
+    
+    private ConferenceRoom createConferenceRoom() {
+		ConferenceRoom room = new ConferenceRoom();
+		room.setRoomName("ATOMICS");
+		room.setRoomNum("23");
+		room.setRoomCapacity(10);
+		room.setBuilding(createBulding());
+		return room;
+    }
+    
     @Test
     @Transactional
     public void createConferenceRoomSchedule() throws Exception {
-        int databaseSizeBeforeCreate = conferenceRoomScheduleRepository.findAll().size();
 
         // Create the ConferenceRoomSchedule
         ConferenceRoomScheduleDTO conferenceRoomScheduleDTO = conferenceRoomScheduleMapper.toDto(conferenceRoomSchedule);
@@ -272,7 +281,6 @@ public class ConferenceRoomScheduleResourceIntTest extends BaseIntegrationTest {
     public void updateConferenceRoomSchedule() throws Exception {
         // Initialize the database
         conferenceRoomScheduleRepository.saveAndFlush(conferenceRoomSchedule);
-        int databaseSizeBeforeUpdate = conferenceRoomScheduleRepository.findAll().size();
 
         // Update the conferenceRoomSchedule
         ConferenceRoomSchedule updatedConferenceRoomSchedule = conferenceRoomScheduleRepository.findOne(conferenceRoomSchedule.getId());
@@ -295,7 +303,6 @@ public class ConferenceRoomScheduleResourceIntTest extends BaseIntegrationTest {
     @Test
     @Transactional
     public void updateNonExistingConferenceRoomSchedule() throws Exception {
-        int databaseSizeBeforeUpdate = conferenceRoomScheduleRepository.findAll().size();
 
         // Create the ConferenceRoomSchedule
         ConferenceRoomScheduleDTO conferenceRoomScheduleDTO = conferenceRoomScheduleMapper.toDto(conferenceRoomSchedule);
@@ -324,6 +331,30 @@ public class ConferenceRoomScheduleResourceIntTest extends BaseIntegrationTest {
         List<ConferenceRoomSchedule> conferenceRoomScheduleList = conferenceRoomScheduleRepository.findAll();
         assertThat(conferenceRoomScheduleList).hasSize(databaseSizeBeforeDelete - 1);
     }
+    
+	@Test
+	public void shouldRetrieveConferenceRoomSchedulesById() throws Exception {
+		// Initialize the database
+        conferenceRoomScheduleRepository.saveAndFlush(conferenceRoomSchedule);
+		
+        // Get the conferenceRoomSchedule
+        restConferenceRoomScheduleMockMvc.perform(get("/api/conference-room-schedule-info/{id}", conferenceRoomSchedule.getId())
+            .accept(TestUtil.APPLICATION_JSON_UTF8))
+            .andExpect(status().isOk());
+		
+	}
+	
+	@Test
+	public void shouldRetrieveConferenceRoomSchedulesForTodayById() throws Exception {
+		// Initialize the database
+        conferenceRoomScheduleRepository.saveAndFlush(conferenceRoomSchedule);
+		
+        // Get the conferenceRoomSchedule
+        restConferenceRoomScheduleMockMvc.perform(get("/api/conference-room-schedule-today/{id}", conferenceRoomSchedule.getId())
+            .accept(TestUtil.APPLICATION_JSON_UTF8))
+            .andExpect(status().isOk());
+		
+	}
 
     @Test
     @Transactional

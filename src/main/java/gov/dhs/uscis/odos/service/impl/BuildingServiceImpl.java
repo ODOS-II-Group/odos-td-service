@@ -42,14 +42,14 @@ public class BuildingServiceImpl implements BuildingService {
     @Override
     public BuildingDTO save(BuildingDTO buildingDTO) {
     	log.debug("Request to save Building : {}", buildingDTO);
-    	Building building = buildingRepository.findOne(buildingDTO.getBuildingId());
-    	if (building == null) {
-    		buildingMapper.toEntity(buildingDTO);
+    	Building building = null;
+    	if (buildingDTO.getBuildingId() != null) {
+    		building = buildingRepository.findOne(buildingDTO.getBuildingId());
     	}
     	else {
-    		building.setBuildingName(buildingDTO.getBuildingName());
-    		building.setBuildingDesc(buildingDTO.getBuildingDesc());
+    		building = new Building();
     	}
+    	buildingMapper.toEntity(buildingDTO, building);
         return buildingMapper.toDto(buildingRepository.save(building));
     }
 

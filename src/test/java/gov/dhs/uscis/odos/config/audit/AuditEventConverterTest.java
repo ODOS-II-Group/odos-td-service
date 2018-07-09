@@ -63,25 +63,43 @@ public class AuditEventConverterTest {
 		};
 		 
 	}
+	
 	@Test
 	public void testConvertToAuditEvent() {
-		
 		List<AuditEvent> returnList = auditEventConverter.convertToAuditEvent(persistentAuditEvents);
 		assertNotNull(returnList);
-		
 	}
+	
 	@Test
 	public void testConvertToAuditEventNull() {
-		
 		List<AuditEvent> returnList =auditEventConverter.convertToAuditEvent(persistentAuditEventNull);
 		assertEquals(0, returnList.size());
-		
 	}
+
 	@Test
 	public void testConvertDataToStrings() {
 		
 		Map<String, String> returnMap = auditEventConverter.convertDataToStrings(dataObject);
 		assertNotNull(returnMap);
 		
+	}
+	
+	@Test
+	public void testConvertDataToStringsNull() {
+		Map<String, String> returnMap = auditEventConverter.convertDataToStrings(null);
+		assertEquals(0, returnMap.size());
+	}
+	
+	@Test
+	public void testConvertDataToObjectsNull() {
+		Map<String, Object> returnMap = auditEventConverter.convertDataToObjects(null);
+		assertEquals(0, returnMap.size());
+	}
+	
+	@Test
+	public void testConvertToAuditEventNullValue() {
+		PersistentAuditEvent ae = null;
+		AuditEvent returnValue = auditEventConverter.convertToAuditEvent(ae);
+		assertNull(returnValue);
 	}
 }

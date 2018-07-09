@@ -24,6 +24,11 @@ public class ConferenceRoomEquipmentMapper implements EntityMapper<ConferenceRoo
 	public ConferenceRoomEquipment toEntity(ConferenceRoomEquipmentDTO dto) {
 		return mapper.map(dto, ConferenceRoomEquipment.class);
 	}
+	
+	@Override
+	public void toEntity(ConferenceRoomEquipmentDTO dto, ConferenceRoomEquipment confRoomEquip) {
+		mapper.map(dto, confRoomEquip);
+	}
 
 	@Override
 	public ConferenceRoomEquipmentDTO toDto(ConferenceRoomEquipment entity) {

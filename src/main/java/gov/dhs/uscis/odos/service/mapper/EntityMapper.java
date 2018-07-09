@@ -12,6 +12,8 @@ import java.util.List;
 public interface EntityMapper <D, E> {
 
     E toEntity(D dto);
+    
+    void toEntity(D dto, E entity);
 
     D toDto(E entity);
 
