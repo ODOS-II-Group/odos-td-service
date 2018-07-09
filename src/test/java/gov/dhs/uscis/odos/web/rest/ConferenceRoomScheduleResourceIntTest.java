@@ -3,6 +3,10 @@ package gov.dhs.uscis.odos.web.rest;
 import static gov.dhs.uscis.odos.web.rest.TestUtil.createFormattingConversionService;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -15,6 +19,7 @@ import java.text.ParseException;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -326,6 +331,30 @@ public class ConferenceRoomScheduleResourceIntTest extends BaseIntegrationTest {
         List<ConferenceRoomSchedule> conferenceRoomScheduleList = conferenceRoomScheduleRepository.findAll();
         assertThat(conferenceRoomScheduleList).hasSize(databaseSizeBeforeDelete - 1);
     }
+    
+	@Test
+	public void shouldRetrieveConferenceRoomSchedulesById() throws Exception {
+		// Initialize the database
+        conferenceRoomScheduleRepository.saveAndFlush(conferenceRoomSchedule);
+		
+        // Get the conferenceRoomSchedule
+        restConferenceRoomScheduleMockMvc.perform(get("/api/conference-room-schedule-info/{id}", conferenceRoomSchedule.getId())
+            .accept(TestUtil.APPLICATION_JSON_UTF8))
+            .andExpect(status().isOk());
+		
+	}
+	
+	@Test
+	public void shouldRetrieveConferenceRoomSchedulesForTodayById() throws Exception {
+		// Initialize the database
+        conferenceRoomScheduleRepository.saveAndFlush(conferenceRoomSchedule);
+		
+        // Get the conferenceRoomSchedule
+        restConferenceRoomScheduleMockMvc.perform(get("/api/conference-room-schedule-today/{id}", conferenceRoomSchedule.getId())
+            .accept(TestUtil.APPLICATION_JSON_UTF8))
+            .andExpect(status().isOk());
+		
+	}
 
     @Test
     @Transactional

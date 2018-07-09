@@ -25,10 +25,10 @@ public class BuildingMapperTest {
 	
 	private Building building;
 	private BuildingDTO buildingDTO;
-		
 	
 	@InjectMocks
 	BuildingMapper buildingMapper;
+	
 	@Mock
 	private ConferenceRoomService conferenceRoomService;
 	private List<ConferenceRoomDTO> conferenceRooms;
@@ -44,7 +44,6 @@ public class BuildingMapperTest {
 		Mockito.when(mapper.map(building, BuildingDTO.class)).thenReturn(buildingDTO);
 		Mockito.when(mapper.map(buildingDTO, Building.class)).thenReturn(building);
 		Mockito.when(conferenceRoomService.findAll()).thenReturn(conferenceRooms);
-		
 	}	
 
 	@Test
@@ -53,20 +52,26 @@ public class BuildingMapperTest {
 	}
 
 	@Test
+	public void testToEntity2() {
+		Building entity = new Building();
+		buildingMapper.toEntity(buildingDTO, entity);
+		assertNotNull(entity);
+	}
+	
+	@Test
 	public void testToDto() {
 		BuildingDTO dtoReturn=  buildingMapper.toDto(building);
 		assertEquals(buildingDTO, dtoReturn);
 		assertEquals(buildingDTO.getConferenceRooms(), conferenceRooms);
 		
 	}
+	
 	@Test
 	public void testToDtoforNull() {
 		Building entity = null;
 		BuildingDTO dtoReturn=  buildingMapper.toDto(entity);
 		assertNull(dtoReturn);
-		
 	}
-
 
 	@Test
 	public void testToEntityFromList() {
@@ -75,7 +80,6 @@ public class BuildingMapperTest {
 		List<Building> dtoList=  buildingMapper.toEntity(entityList);
 		assertEquals(dtoList.size(), 1);
 	}
-
 
 	@Test
 	public void testToDtoFromList() {

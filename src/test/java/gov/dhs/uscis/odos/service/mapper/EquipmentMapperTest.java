@@ -22,11 +22,9 @@ public class EquipmentMapperTest {
 	
 	private Equipment equipment;
 	private EquipmentDTO equipmentDTO;
-		
 	
 	@InjectMocks
 	EquipmentMapper equipmentMapper;
-
 
 	@Mock
 	private Mapper mapper;
@@ -37,8 +35,6 @@ public class EquipmentMapperTest {
 		equipment = new Equipment();
 		Mockito.when(mapper.map(equipment, EquipmentDTO.class)).thenReturn(equipmentDTO);
 		Mockito.when(mapper.map(equipmentDTO, Equipment.class)).thenReturn(equipment);
-		 
-		
 	}	
 
 	@Test
@@ -47,11 +43,16 @@ public class EquipmentMapperTest {
 	}
 
 	@Test
+	public void testToEntity2() {
+		Equipment entity = new Equipment();
+		equipmentMapper.toEntity(equipmentDTO, entity);
+		assertNotNull(entity);
+	}
+	
+	@Test
 	public void testToDto() {
 		EquipmentDTO dtoReturn=  equipmentMapper.toDto(equipment);
 		assertEquals(equipmentDTO, dtoReturn);
-		 
-		
 	}
 
 	@Test

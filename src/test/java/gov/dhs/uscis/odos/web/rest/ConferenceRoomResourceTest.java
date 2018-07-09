@@ -29,8 +29,10 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.util.NestedServletException;
 
+import gov.dhs.uscis.odos.service.ConferenceRoomScheduleService;
 import gov.dhs.uscis.odos.service.ConferenceRoomService;
 import gov.dhs.uscis.odos.service.dto.ConferenceRoomDTO;
+import gov.dhs.uscis.odos.service.dto.ConferenceRoomScheduleDTO;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ConferenceRoomResourceTest {
@@ -45,6 +47,9 @@ public class ConferenceRoomResourceTest {
 
 	@InjectMocks
 	private ConferenceRoomResource conferenceRoomResource;
+	
+	@Mock
+	private ConferenceRoomScheduleService conferenceRoomScheduleService;
 
 	@Before
 	public void setup() {
@@ -158,6 +163,11 @@ public class ConferenceRoomResourceTest {
 		conferenceRoomDto.setConferenceRoomId(id);
 		
 		return conferenceRoomDto;
+	}
+	
+	private ConferenceRoomScheduleDTO createConfRoomScheduleDTO() {
+		ConferenceRoomScheduleDTO scheduleDto = new ConferenceRoomScheduleDTO();		
+		return scheduleDto;
 	}
 	 
 }
