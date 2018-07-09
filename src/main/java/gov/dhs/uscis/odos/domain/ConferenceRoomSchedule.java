@@ -48,6 +48,16 @@ public class ConferenceRoomSchedule implements Serializable {
     @Column(name = "conf_title")
     private String conferenceTitle;
     
+    @Column(name = "first_name")
+    private String firstName;
+    
+    @Column(name = "last_name")
+    private String lastName;
+    
+    @Column(name = "conference_description")
+    private String conferenceDescription;
+
+    
     @ManyToOne(targetEntity = ConferenceRoom.class,cascade = CascadeType.ALL)
 	@JoinColumn(name = "conf_rm_id")
 	private ConferenceRoom conferenceRoom;
@@ -121,6 +131,30 @@ public class ConferenceRoomSchedule implements Serializable {
 
 	public void setConferenceRoom(ConferenceRoom conferenceRoom) {
 		this.conferenceRoom = conferenceRoom;
+	}
+	
+	public String getFirstName() {
+		return firstName;
+	}
+
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+	public String getLastName() {
+		return lastName;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+	
+	public String getConferenceDescription() {
+		return conferenceDescription;
+	}
+
+	public void setConferenceDescription(String conferenceDescription) {
+		this.conferenceDescription = conferenceDescription;
 	}
 
 	@Override
