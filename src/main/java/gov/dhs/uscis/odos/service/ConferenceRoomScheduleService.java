@@ -59,4 +59,12 @@ public interface ConferenceRoomScheduleService {
      */
 
 	int findAllScheduledRoomTodayById(Long id);
+	
+	 /**
+     * Get all room BookedTimeSlotscheduled room today
+     * @param conferenceRoomId
+     * @return List<ConferenceRoomScheduleDTO>
+     */
+	
+	List<Integer> getRoomBookedTimeSlot();
 }
