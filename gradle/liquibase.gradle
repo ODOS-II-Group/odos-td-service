@@ -11,7 +11,11 @@ dependencies {
 }
 
 if (OperatingSystem.current().isWindows()) {
-    ext.psql = "C:/PostgreSQL/pg10/bin/psql.exe"
+	if(System.getenv('PSQL_BIN') != null){
+	 	ext.psql = System.getenv('PSQL_BIN')
+	} else {
+		ext.psql = "C:/PostgreSQL/pg10/bin/psql.exe"
+	}
 } else {
     if (System.getenv('PSQL_BIN') == null) {
         ext.psql = "/usr/bin/psql"

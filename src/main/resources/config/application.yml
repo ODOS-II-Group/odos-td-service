@@ -90,9 +90,9 @@ spring:
     datasource:
         platform: POSTGRESSQL
         type: com.zaxxer.hikari.HikariDataSource
-        url: jdbc:postgresql://${CRRSVC_DB_HOST:localhost}:${CRRSVC_DATABASE_PORT:5432}/${CRRSVC_DATABASE_NAME:odos_crrs_svc}?stringtype=unspecified
+        url: jdbc:postgresql://${CRRSVC_DB_HOST:localhost}:${CRRSVC_DATABASE_PORT:5432}/${CRRSVC_DATABASE_NAME:odos_test_svc}?stringtype=unspecified
         username: ${CRRSVC_DATABASE_USERNAME:odos_crrs_svc_app}
-        password: ${CRRSVC_DATABASE_PASSWORD}
+        password: ${CRRSVC_DATABASE_PASSWORD:0d0sP455}
         tomcat:
           validation-query: SELECT 1
         driverClassName: org.postgresql.Driver

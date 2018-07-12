@@ -26,7 +26,7 @@ import io.github.jhipster.config.JHipsterConstants;
 @ComponentScan
 @EnableAutoConfiguration(exclude = {MetricFilterAutoConfiguration.class, MetricRepositoryAutoConfiguration.class})
 @EnableConfigurationProperties({LiquibaseProperties.class, ApplicationProperties.class})
-@EnableDiscoveryClient
+//@EnableDiscoveryClient
 public class CrrsvcApp {
 
     private static final Logger log = LoggerFactory.getLogger(CrrsvcApp.class);
