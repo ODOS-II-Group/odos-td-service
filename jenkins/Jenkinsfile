@@ -96,9 +96,12 @@ pipeline {
             steps {
               script{
                 Common.slack 'Deploying to Test Environment...'
-                withCredentials([usernamePassword(credentialsId: 'TEST_DB_USER_PASS', passwordVariable: 'TEST_DB_PASS', usernameVariable: 'TEST_DB_USER')]) {
+                withCredentials([
+                  usernamePassword(credentialsId: 'TEST_DB_USER_PASS', passwordVariable: 'TEST_DB_PASS', usernameVariable: 'TEST_DB_USER'),
+                  usernamePassword(credentialsId: 'TEST_DB_APP_USER_PASS', passwordVariable: 'TEST_DB_APP_PASS', usernameVariable: 'TEST_DB_APP_USER')
+                  ]) {
                   sh """
-                  ./gradlew baseline liquibaseUpdate -PdatabaseHost=${TEST_DB_HOST} -PdatabaseAdmin=${TEST_DB_USER} -PdatabasePassword=${TEST_DB_PASS} -PdatabaseName=odos_test_svc
+                  ./gradlew baselineTest liquibaseUpdate -PdatabaseHost=${TEST_DB_HOST} -PdatabasePort=5432 -PdatabaseName=pipeline_svc -PdatabaseSchema=odos_crrs_svc -PdatabaseAppRole=pipeline_svc -PdatabaseAppPassword=${TEST_DB_APP_PASS} -PshowSql=false -PdatabaseAdmin=${TEST_DB_USER} -PdatabasePassword=${TEST_DB_PASS} --stacktrace
                   """
                 }
                 // Common.deployToOpenShift("${OPENSHIFT_ENV}","${CONTAINER_NAME}",'latest')
