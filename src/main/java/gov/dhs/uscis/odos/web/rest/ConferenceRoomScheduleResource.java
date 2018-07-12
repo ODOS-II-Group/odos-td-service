@@ -2,6 +2,7 @@ package gov.dhs.uscis.odos.web.rest;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -160,5 +161,12 @@ public class ConferenceRoomScheduleResource {
         log.debug("REST request to delete ConferenceRoomSchedule : {}", id);
         conferenceRoomScheduleService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
+    }
+    
+    @PostMapping("/conference-room-schedule/schedule")
+    @Timed
+    public List<ConferenceRoomScheduleDTO> getConferenceRoomScheduleByDate(
+    		@Valid @RequestBody Long conferenceRoomId, String roomScheduleStartTime, String roomScheduleEndTime) throws URISyntaxException {
+    	return conferenceRoomScheduleService.findAllByConferenceRoomIdAndDate(conferenceRoomId, roomScheduleStartTime, roomScheduleEndTime);
     }
 }
