@@ -1,13 +1,11 @@
 package gov.dhs.uscis.odos.service;
 
-import gov.dhs.uscis.odos.domain.ConferenceRoomSchedule;
-import gov.dhs.uscis.odos.service.dto.ConferenceRoomScheduleDTO;
-
-import java.util.Date;
 import java.util.List;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+
+import gov.dhs.uscis.odos.service.dto.ConferenceRoomScheduleDTO;
 
 /**
  * Service Interface for managing ConferenceRoomSchedule.

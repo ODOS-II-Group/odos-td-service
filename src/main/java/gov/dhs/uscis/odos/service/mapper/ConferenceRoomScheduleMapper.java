@@ -1,23 +1,18 @@
 package gov.dhs.uscis.odos.service.mapper;
 
-import java.text.ParseException;
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import org.apache.commons.lang3.time.DateUtils;
 import org.dozer.Mapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import gov.dhs.uscis.odos.domain.ConferenceRoomSchedule;
 import gov.dhs.uscis.odos.service.dto.ConferenceRoomScheduleDTO;
+import gov.dhs.uscis.odos.util.DateUtil;
 
 
 /**
@@ -31,8 +26,6 @@ public class ConferenceRoomScheduleMapper implements EntityMapper<ConferenceRoom
 	private Mapper mapper;
 	
 	private static final Logger log  = LoggerFactory.getLogger(ConferenceRoomScheduleMapper.class);
-	
-	private static final String DATE_FORMAT  = "yyyy-MM-dd HH:mm";
 
 	@Override
 	public ConferenceRoomSchedule toEntity(ConferenceRoomScheduleDTO dto) {
@@ -42,8 +35,8 @@ public class ConferenceRoomScheduleMapper implements EntityMapper<ConferenceRoom
 		dto.setRoomScheduleEndTime(null);
 		ConferenceRoomSchedule conferenceRoomSchedule  =  mapper.map(dto, ConferenceRoomSchedule.class);
 		
-		conferenceRoomSchedule.setRoomScheduleStartTime(convertDateString(startDate, DATE_FORMAT));
-		conferenceRoomSchedule.setRoomScheduleEndTime(convertDateString(endDate, DATE_FORMAT));
+		conferenceRoomSchedule.setRoomScheduleStartTime(DateUtil.convertDateString(startDate));
+		conferenceRoomSchedule.setRoomScheduleEndTime(DateUtil.convertDateString(endDate));
 		return conferenceRoomSchedule;
 		
 	}
@@ -56,8 +49,8 @@ public class ConferenceRoomScheduleMapper implements EntityMapper<ConferenceRoom
 		dto.setRoomScheduleEndTime(null);
 		mapper.map(dto, confRoomSchedule);
 		
-		confRoomSchedule.setRoomScheduleStartTime(convertDateString(startDate, DATE_FORMAT));
-		confRoomSchedule.setRoomScheduleEndTime(convertDateString(endDate, DATE_FORMAT));
+		confRoomSchedule.setRoomScheduleStartTime(DateUtil.convertDateString(startDate));
+		confRoomSchedule.setRoomScheduleEndTime(DateUtil.convertDateString(endDate));
 		
 	}
 
@@ -66,10 +59,10 @@ public class ConferenceRoomScheduleMapper implements EntityMapper<ConferenceRoom
 		if (entity == null) return null;
 		ConferenceRoomScheduleDTO conferenceRoomScheduleDTO = mapper.map(entity, ConferenceRoomScheduleDTO.class);
 		if (entity.getRoomScheduleStartTime() != null) {
-			conferenceRoomScheduleDTO.setRoomScheduleStartTime(convertDateValue(entity.getRoomScheduleStartTime(), DATE_FORMAT));
+			conferenceRoomScheduleDTO.setRoomScheduleStartTime(DateUtil.convertDateValue(entity.getRoomScheduleStartTime()));
 		}
 		if (entity.getRoomScheduleEndTime() != null) {
-			conferenceRoomScheduleDTO.setRoomScheduleEndTime(convertDateValue(entity.getRoomScheduleEndTime(), DATE_FORMAT));
+			conferenceRoomScheduleDTO.setRoomScheduleEndTime(DateUtil.convertDateValue(entity.getRoomScheduleEndTime()));
 		}
 		conferenceRoomScheduleDTO.setConferenceRoomId(entity.getConferenceRoom().getConferenceRoomId());
 		conferenceRoomScheduleDTO.setBuildingName(entity.getConferenceRoom().getBuilding().getBuildingName());
@@ -87,24 +80,6 @@ public class ConferenceRoomScheduleMapper implements EntityMapper<ConferenceRoom
 	public List<ConferenceRoomScheduleDTO> toDto(List<ConferenceRoomSchedule> entityList) {
 		
 		return Collections.emptyList();
-	}
-	
-	private Date convertDateString(String dateStr, String format) {
-		Date dateValue = null;
-		try {
-			dateValue = DateUtils.parseDate(dateStr, format);
-		}
-		catch(ParseException e) {
-			log.error("Error parsing date value " + dateStr, e);
-			throw new RuntimeException(e);
-		}
-		return dateValue;
-	}
-	
-	private String convertDateValue(Date dateValue, String format) {
-		Instant instant = dateValue.toInstant();
-		LocalDateTime localDateTime = LocalDateTime.ofInstant(instant, ZoneId.systemDefault());
-		return localDateTime.toString();
 	}
 
 }

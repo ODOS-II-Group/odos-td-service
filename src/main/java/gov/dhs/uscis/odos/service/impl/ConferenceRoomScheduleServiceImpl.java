@@ -1,13 +1,5 @@
 package gov.dhs.uscis.odos.service.impl;
 
-import gov.dhs.uscis.odos.service.ConferenceRoomScheduleService;
-import gov.dhs.uscis.odos.domain.ConferenceRoomSchedule;
-import gov.dhs.uscis.odos.repository.ConferenceRoomRepository;
-import gov.dhs.uscis.odos.repository.ConferenceRoomScheduleRepository;
-import gov.dhs.uscis.odos.service.dto.ConferenceRoomScheduleDTO;
-import gov.dhs.uscis.odos.service.mapper.ConferenceRoomScheduleMapper;
-
-import java.text.ParseException;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -15,13 +7,20 @@ import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 
-import org.apache.commons.lang3.time.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import gov.dhs.uscis.odos.domain.ConferenceRoomSchedule;
+import gov.dhs.uscis.odos.repository.ConferenceRoomRepository;
+import gov.dhs.uscis.odos.repository.ConferenceRoomScheduleRepository;
+import gov.dhs.uscis.odos.service.ConferenceRoomScheduleService;
+import gov.dhs.uscis.odos.service.dto.ConferenceRoomScheduleDTO;
+import gov.dhs.uscis.odos.service.mapper.ConferenceRoomScheduleMapper;
+import gov.dhs.uscis.odos.util.DateUtil;
 
 
 /**
@@ -39,8 +38,6 @@ public class ConferenceRoomScheduleServiceImpl implements ConferenceRoomSchedule
     private final ConferenceRoomScheduleRepository conferenceRoomScheduleRepository;
 
     private final ConferenceRoomScheduleMapper conferenceRoomScheduleMapper;
-    
-    private static final String DATE_FORMAT  = "yyyy-MM-dd HH:mm";
 
     public ConferenceRoomScheduleServiceImpl(ConferenceRoomScheduleRepository conferenceRoomScheduleRepository, ConferenceRoomScheduleMapper conferenceRoomScheduleMapper) {
         this.conferenceRoomScheduleRepository = conferenceRoomScheduleRepository;
@@ -123,22 +120,10 @@ public class ConferenceRoomScheduleServiceImpl implements ConferenceRoomSchedule
 	
 	@Override
 	public List<ConferenceRoomScheduleDTO> findAllByConferenceRoomIdAndDate(Long conferenceRoomId, String roomScheduleStartTime, String roomScheduleEndTime) {
-		Date startDate = convertDateString(roomScheduleStartTime, DATE_FORMAT);
-		Date endDate = convertDateString(roomScheduleEndTime, DATE_FORMAT);
+		Date startDate = DateUtil.convertDateString(roomScheduleStartTime);
+		Date endDate = DateUtil.convertDateString(roomScheduleEndTime);
 		return conferenceRoomScheduleRepository.findAllByConferenceRoomIdAndDate(conferenceRoomId, startDate, endDate)
 				.stream().map(conferenceRoomScheduleMapper::toDto)
 				.collect(Collectors.toCollection(LinkedList::new));
-	}
-	
-	private Date convertDateString(String dateStr, String format) {
-		Date dateValue = null;
-		try {
-			dateValue = DateUtils.parseDate(dateStr, format);
-		}
-		catch(ParseException e) {
-			log.error("Error parsing date value " + dateStr, e);
-			throw new RuntimeException(e);
-		}
-		return dateValue;
 	}
 }
