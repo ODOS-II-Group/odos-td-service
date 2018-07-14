@@ -161,4 +161,11 @@ public class ConferenceRoomScheduleResource {
         conferenceRoomScheduleService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
+    
+    @PostMapping("/conference-room-schedule/schedule")
+    @Timed
+    public List<ConferenceRoomScheduleDTO> getConferenceRoomScheduleByDate(
+    		@Valid @RequestBody Long conferenceRoomId, String roomScheduleStartTime, String roomScheduleEndTime) throws URISyntaxException {
+    	return conferenceRoomScheduleService.findAllByConferenceRoomIdAndDate(conferenceRoomId, roomScheduleStartTime, roomScheduleEndTime);
+    }
 }

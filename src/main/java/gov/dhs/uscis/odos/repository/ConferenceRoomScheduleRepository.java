@@ -1,5 +1,6 @@
 package gov.dhs.uscis.odos.repository;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -26,6 +27,10 @@ public interface ConferenceRoomScheduleRepository extends JpaRepository<Conferen
 	@Query("SELECT count(*) FROM ConferenceRoomSchedule cs inner join cs.conferenceRoom cf where cf.conferenceRoomId = :conferenceRoomId and "
 			+ " cs.roomScheduleStartTime >= CURRENT_DATE")
 	public int findAllScheduledRoomTodayByConferenceRoomI(@Param("conferenceRoomId") Long conferenceRoomId);
-
+	
+	@Query("SELECT cs FROM ConferenceRoomSchedule cs inner join cs.conferenceRoom cf where cf.conferenceRoomId = :conferenceRoomId and "
+			+ " cs.roomScheduleStartTime >= :startDate AND cs.roomScheduleEndTime >= :endDate")
+	public List<ConferenceRoomSchedule> findAllByConferenceRoomIdAndDate(@Param("conferenceRoomId") Long conferenceRoomId,
+			@Param("startDate") Date startDate, @Param("endDate") Date endDate);
 
 }
