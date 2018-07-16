@@ -28,9 +28,11 @@ public interface ConferenceRoomScheduleRepository extends JpaRepository<Conferen
 			+ " cs.roomScheduleStartTime >= CURRENT_DATE")
 	public int findAllScheduledRoomTodayByConferenceRoomI(@Param("conferenceRoomId") Long conferenceRoomId);
 	
+//	@Query("SELECT cs FROM ConferenceRoomSchedule cs inner join cs.conferenceRoom cf where cf.conferenceRoomId = :conferenceRoomId and "
+//			+ " cs.roomScheduleStartTime >= :startDate AND cs.roomScheduleEndTime >= :endDate")
 	@Query("SELECT cs FROM ConferenceRoomSchedule cs inner join cs.conferenceRoom cf where cf.conferenceRoomId = :conferenceRoomId and "
-			+ " cs.roomScheduleStartTime >= :startDate AND cs.roomScheduleEndTime >= :endDate")
+	+ " cs.roomScheduleStartTime = :startDate ")
 	public List<ConferenceRoomSchedule> findAllByConferenceRoomIdAndDate(@Param("conferenceRoomId") Long conferenceRoomId,
-			@Param("startDate") Date startDate, @Param("endDate") Date endDate);
+			@Param("startDate") Date startDate);
 
 }

@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 
 import java.util.Date;
@@ -23,6 +24,7 @@ import java.util.stream.Collectors;
 import javax.inject.Inject;
 
 import org.joda.time.DateTime;
+import org.joda.time.Hours;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -137,58 +139,76 @@ public class ConferenceRoomScheduleServiceImpl implements ConferenceRoomSchedule
 	}
 
 	@Override
-	public List<Integer> getRoomBookedTimeSlot() {
-		List<ConferenceRoomScheduleDTO> test = Arrays.asList(new ConferenceRoomScheduleDTO());
-		return null;
+	public List<Integer> getRoomBookedTimeSlot(Long id, String date) {
+		
+		List<Integer> bookedSlot = new ArrayList<>();
+
+		List<ConferenceRoomScheduleDTO> listBookedDTO = this.findAllByConferenceRoomIdAndDate(id, date);
+
+		for (ConferenceRoomScheduleDTO bookedDTO : listBookedDTO) {
+
+			Date start = DateUtil.convertDateString(bookedDTO.getRoomScheduleStartTime());
+			Date end = DateUtil.convertDateString(bookedDTO.getRoomScheduleEndTime());
+
+			DateTime startDate = new DateTime(start);
+			DateTime endDate = new DateTime(end);
+
+			int startHour = startDate.getHourOfDay();
+			int startMinute = startDate.getMinuteOfHour();
+
+			int endHour = endDate.getHourOfDay();
+			int endMinute = endDate.getMinuteOfHour();
+			
+			this.getBookSlot(startHour, startMinute, endHour, endMinute);
+
+		}
+		return bookedSlot;
 	}
 
-	public static void main(String[] args) {
-		List<Integer> slot = new ArrayList<>();
-		// Map<Integer, List<E>> map = new HashMap<>;
-		// 9 - 17
-		// 00, 15 ,30 ,45,
+	private int getBookSlot(int startHour, int startMinute, int endHour, int endMinute) {
 
-		// 9,10,11,12,13,14,15,16,17
+		for (int hour = 9; hour < 18; hour++) {
 
-		Date st = new Date();
-		DateTime startTime = new DateTime(st);
-		
-		int startHour = startTime.getHourOfDay();
-		int startMinute = startTime.getMinuteOfHour();
+			int adder = 1;
 
-		Date et = new Date();
-		DateTime endTime = new DateTime(et);
-		endTime.plusHours(1);
-		int endHour = endTime.getHourOfDay();
-		int endMinute = endTime.getMinuteOfHour();
+			int bookedSlot = 1 * adder;
 
-		int slotCounter = 0;
+			int nextHour = startHour + 1;
 
-		for (int hour = 9; hour < 24; hour++) {
-			int endH = +hour;
-			slotCounter ++;
 			if (startHour == hour) {
+
 				if (startMinute == 0 && endMinute == 15) {
-					slot.add(slotCounter);
-				} else if (startMinute == 15 && endMinute == 45) {
-					slotCounter = +slotCounter;
-					slot.add(slotCounter);
-				} else if (startHour == hour && endHour == endH && startMinute == 45 && endMinute == 0) {
-					slotCounter = +slotCounter;
-					slot.add(slotCounter);
+
+					return bookedSlot;
+
+				} else if (startMinute == 15 && endMinute == 30) {
+
+					return bookedSlot;
+
+				} else if (startMinute == 30 && endMinute == 45) {
+
+					return bookedSlot;
+
+				} else if (endHour == nextHour && startMinute == 45 && endMinute == 0) {
+
+					return bookedSlot;
+
 				}
+				adder = adder * 4;
 			}
 
 		}
+
+		return 0;
+
 	}
 
 	@Override
 	public List<ConferenceRoomScheduleDTO> findAllByConferenceRoomIdAndDate(Long conferenceRoomId,
-			String roomScheduleStartTime, String roomScheduleEndTime) {
+			String roomScheduleStartTime) {
 		Date startDate = DateUtil.convertDateString(roomScheduleStartTime);
-		Date endDate = DateUtil.convertDateString(roomScheduleEndTime);
-		return conferenceRoomScheduleRepository.findAllByConferenceRoomIdAndDate(conferenceRoomId, startDate, endDate)
-				.stream().map(conferenceRoomScheduleMapper::toDto).collect(Collectors.toCollection(LinkedList::new));
+		return conferenceRoomScheduleRepository.findAllByConferenceRoomIdAndDate(conferenceRoomId, startDate).stream()
+				.map(conferenceRoomScheduleMapper::toDto).collect(Collectors.toCollection(LinkedList::new));
 
 	}
 }

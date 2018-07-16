@@ -202,4 +202,12 @@ public class ConferenceRoomSchedule implements Serializable {
             ", conferenceTitle='" + getConferenceTitle() + "'" +
             "}";
     }
+
+	public ConferenceRoomSchedule(Date roomScheduleStartTime, Date roomScheduleEndTime) {
+		super();
+		this.roomScheduleStartTime = roomScheduleStartTime;
+		this.roomScheduleEndTime = roomScheduleEndTime;
+	}
+	public ConferenceRoomSchedule() {}
+    
 }

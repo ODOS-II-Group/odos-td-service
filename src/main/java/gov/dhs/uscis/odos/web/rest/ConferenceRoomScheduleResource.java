@@ -2,6 +2,7 @@ package gov.dhs.uscis.odos.web.rest;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -162,10 +163,16 @@ public class ConferenceRoomScheduleResource {
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
     
-    @PostMapping("/conference-room-schedule/schedule")
+    /**
+     * GET  /conference-room-schedule-today/:id : get the "id" conferenceRoomSchedule.
+     *
+     * @param id the id of the conferenceRoomScheduleDTO to retrieve
+     * @return the ResponseEntity with status 200 (OK) and with body the conferenceRoomScheduleDTO, or with status 404 (Not Found)
+     */
+    @GetMapping("/conference-room-schedule-today/{id}")
     @Timed
-    public List<ConferenceRoomScheduleDTO> getConferenceRoomScheduleByDate(
-    		@Valid @RequestBody Long conferenceRoomId, String roomScheduleStartTime, String roomScheduleEndTime) throws URISyntaxException {
-    	return conferenceRoomScheduleService.findAllByConferenceRoomIdAndDate(conferenceRoomId, roomScheduleStartTime, roomScheduleEndTime);
+    public List<Integer> getBookedScheduledRoomTodayById(@PathVariable Long id, String date) {
+        log.debug("REST request to get ConferenceRoomSchedule : {} {}", id, date);
+        return conferenceRoomScheduleService.getRoomBookedTimeSlot(id , date);
     }
 }

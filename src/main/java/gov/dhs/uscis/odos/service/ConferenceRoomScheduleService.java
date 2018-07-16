@@ -1,5 +1,6 @@
 package gov.dhs.uscis.odos.service;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.data.domain.Page;
@@ -73,9 +74,9 @@ public interface ConferenceRoomScheduleService {
 	 * @return List<ConferenceRoomScheduleDTO>
 	 */
 
-	List<Integer> getRoomBookedTimeSlot();
+	List<Integer> getRoomBookedTimeSlot(Long id, String date);
 
 	List<ConferenceRoomScheduleDTO> findAllByConferenceRoomIdAndDate(Long conferenceRoomId,
-			String roomScheduleStartTime, String roomScheduleEndTime);
+			String roomScheduleStartTime);
 
 }
