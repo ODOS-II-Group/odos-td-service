@@ -169,7 +169,7 @@ public class ConferenceRoomScheduleResource {
      * @param id the id of the conferenceRoomScheduleDTO to retrieve
      * @return the ResponseEntity with status 200 (OK) and with body the conferenceRoomScheduleDTO, or with status 404 (Not Found)
      */
-    @GetMapping("/conference-room-schedule-today/{id}")
+    @GetMapping("/conference-room-schedule-slot/{id}")
     @Timed
     public List<Integer> getBookedScheduledRoomTodayById(@PathVariable Long id, String date) {
         log.debug("REST request to get ConferenceRoomSchedule : {} {}", id, date);
