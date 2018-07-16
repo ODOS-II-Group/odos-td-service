@@ -13,7 +13,7 @@ import org.slf4j.LoggerFactory;
 public class DateUtil {
 	private static final Logger log  = LoggerFactory.getLogger(DateUtil.class);
 	
-	private static final String DATE_FORMAT  = "yyyy-MM-dd HH:mm";
+	private static final String DATE_FORMAT  = "yyyy-MM-dd";
 	
 	public static Date convertDateString(String dateStr) {
 		Date dateValue = null;
