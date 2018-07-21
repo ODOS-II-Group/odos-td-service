@@ -140,15 +140,15 @@ public class ConferenceRoomScheduleServiceImpl implements ConferenceRoomSchedule
 
 	@Override
 	public List<Integer> getRoomBookedTimeSlot(Long id, String date) {
-		
+
 		List<Integer> bookedSlot = new ArrayList<>();
 
 		List<ConferenceRoomScheduleDTO> listBookedDTO = this.findAllByConferenceRoomIdAndDate(id, date);
 
 		for (ConferenceRoomScheduleDTO bookedDTO : listBookedDTO) {
 
-			Date start = DateUtil.convertDateString(bookedDTO.getRoomScheduleStartTime());
-			Date end = DateUtil.convertDateString(bookedDTO.getRoomScheduleEndTime());
+			Date start = DateUtil.convertDateTimeString(bookedDTO.getRoomScheduleStartTime());
+			Date end = DateUtil.convertDateTimeString(bookedDTO.getRoomScheduleEndTime());
 
 			DateTime startDate = new DateTime(start);
 			DateTime endDate = new DateTime(end);
@@ -158,8 +158,8 @@ public class ConferenceRoomScheduleServiceImpl implements ConferenceRoomSchedule
 
 			int endHour = endDate.getHourOfDay();
 			int endMinute = endDate.getMinuteOfHour();
-			
-			this.getBookSlot(startHour, startMinute, endHour, endMinute);
+
+			bookedSlot.add(this.getBookSlot(startHour, startMinute, endHour, endMinute));
 
 		}
 		return bookedSlot;
@@ -167,36 +167,196 @@ public class ConferenceRoomScheduleServiceImpl implements ConferenceRoomSchedule
 
 	private int getBookSlot(int startHour, int startMinute, int endHour, int endMinute) {
 
-		for (int hour = 9; hour < 18; hour++) {
 
-			int adder = 1;
+		int nextHour = startHour + 1;
 
-			int bookedSlot = 1 * adder;
+		int bookedSlot = 0;
 
-			int nextHour = startHour + 1;
+		switch (startHour) {
 
-			if (startHour == hour) {
+		case 9:
+			bookedSlot = 1;
+			if (startMinute == 0 && endMinute == 15) {
 
-				if (startMinute == 0 && endMinute == 15) {
+				return bookedSlot;
 
-					return bookedSlot;
+			} else if (startMinute == 15 && endMinute == 30) {
 
-				} else if (startMinute == 15 && endMinute == 30) {
+				return bookedSlot + 1;
 
-					return bookedSlot;
+			} else if (startMinute == 30 && endMinute == 45) {
 
-				} else if (startMinute == 30 && endMinute == 45) {
+				return bookedSlot + 2;
 
-					return bookedSlot;
+			} else if (endHour == nextHour && startMinute == 45 && endMinute == 0) {
 
-				} else if (endHour == nextHour && startMinute == 45 && endMinute == 0) {
+				return bookedSlot + 3;
 
-					return bookedSlot;
-
-				}
-				adder = adder * 4;
 			}
+			break;
+		case 10:
+			bookedSlot = 5;
+			if (startMinute == 0 && endMinute == 15) {
 
+				return bookedSlot;
+
+			} else if (startMinute == 15 && endMinute == 30) {
+
+				return bookedSlot + 1;
+
+			} else if (startMinute == 30 && endMinute == 45) {
+
+				return bookedSlot + 2;
+
+			} else if (endHour == nextHour && startMinute == 45 && endMinute == 0) {
+
+				return bookedSlot + 3;
+
+			}
+			break;
+		case 11:
+			bookedSlot = 9;
+			if (startMinute == 0 && endMinute == 15) {
+
+				return bookedSlot;
+
+			} else if (startMinute == 15 && endMinute == 30) {
+
+				return bookedSlot + 1;
+
+			} else if (startMinute == 30 && endMinute == 45) {
+
+				return bookedSlot + 2;
+
+			} else if (endHour == nextHour && startMinute == 45 && endMinute == 0) {
+
+				return bookedSlot + 3;
+
+			}
+			break;
+		case 12:
+			bookedSlot = 13;
+			if (startMinute == 0 && endMinute == 15) {
+
+				return bookedSlot;
+
+			} else if (startMinute == 15 && endMinute == 30) {
+
+				return bookedSlot + 1;
+
+			} else if (startMinute == 30 && endMinute == 45) {
+
+				return bookedSlot + 2;
+
+			} else if (endHour == nextHour && startMinute == 45 && endMinute == 0) {
+
+				return bookedSlot + 3;
+
+			}
+			break;
+		case 13:
+			bookedSlot = 17;
+			if (startMinute == 0 && endMinute == 15) {
+
+				return bookedSlot;
+
+			} else if (startMinute == 15 && endMinute == 30) {
+
+				return bookedSlot + 1;
+
+			} else if (startMinute == 30 && endMinute == 45) {
+
+				return bookedSlot + 2;
+
+			} else if (endHour == nextHour && startMinute == 45 && endMinute == 0) {
+
+				return bookedSlot + 3;
+
+			}
+			break;
+		case 14:
+			bookedSlot = 21;
+			if (startMinute == 0 && endMinute == 15) {
+
+				return bookedSlot;
+
+			} else if (startMinute == 15 && endMinute == 30) {
+
+				return bookedSlot + 1;
+
+			} else if (startMinute == 30 && endMinute == 45) {
+
+				return bookedSlot + 2;
+
+			} else if (endHour == nextHour && startMinute == 45 && endMinute == 0) {
+
+				return bookedSlot + 3;
+
+			}
+			break;
+		case 15:
+			bookedSlot = 25;
+			if (startMinute == 0 && endMinute == 15) {
+
+				return bookedSlot;
+
+			} else if (startMinute == 15 && endMinute == 30) {
+
+				return bookedSlot + 1;
+
+			} else if (startMinute == 30 && endMinute == 45) {
+
+				return bookedSlot + 2;
+
+			} else if (endHour == nextHour && startMinute == 45 && endMinute == 0) {
+
+				return bookedSlot + 3;
+
+			}
+			break;
+		case 16:
+			bookedSlot = 29;
+			if (startMinute == 0 && endMinute == 15) {
+
+				return bookedSlot;
+
+			} else if (startMinute == 15 && endMinute == 30) {
+
+				return bookedSlot + 1;
+
+			} else if (startMinute == 30 && endMinute == 45) {
+
+				return bookedSlot + 2;
+
+			} else if (endHour == nextHour && startMinute == 45 && endMinute == 0) {
+
+				return bookedSlot + 3;
+
+			}
+			break;
+		case 17:
+			bookedSlot = 32;
+			if (startMinute == 0 && endMinute == 15) {
+
+				return bookedSlot;
+
+			} else if (startMinute == 15 && endMinute == 30) {
+
+				return bookedSlot + 1;
+
+			} else if (startMinute == 30 && endMinute == 45) {
+
+				return bookedSlot + 2;
+
+			} else if (endHour == nextHour && startMinute == 45 && endMinute == 0) {
+
+				return bookedSlot + 3;
+
+			}
+			break;
+
+		default:
+			break;
 		}
 
 		return 0;
